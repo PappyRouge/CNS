@@ -1,0 +1,11 @@
+.panel {
+  background: #11111a;
+  border: 1px solid #33334a;
+  padding: 20px;
+  margin-top: 30px;
+  color: #e0e0ff;
+}
+h3 {
+  margin-top: 0;
+  color: #e0e0ff;
+}
