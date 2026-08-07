@@ -71,11 +71,14 @@ async function sendRegion() {
     criticalCommunities: document.getElementById("critical").value.split(",").map(s => s.trim())
   };
 
+  async function sendSignal() {
   const res = await fetch(API, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(payload)
   });
+}
+
 
   document.getElementById("statusBox").textContent = "Regional signal sent.";
 }
