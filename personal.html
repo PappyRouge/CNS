@@ -76,11 +76,14 @@ async function sendSignal() {
     burnoutRisk: Number(document.getElementById("burnoutRisk").value)
   };
 
+async function sendSignal() {
   const res = await fetch(API, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(payload)
   });
+}
+
 
   document.getElementById("status").textContent = "Signal sent.";
 }
