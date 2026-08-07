@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CNS Dashboard</title>
+
+<style>
+  body {
+    background: #0a0a0f;
+    color: #e0e0ff;
+    font-family: monospace;
+    padding: 40px;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  h2 {
+    text-align: center;
+    color: #e0e0ff;
+  }
+
+  .panel {
+    background: #11111a;
+    border: 1px solid #33334a;
+    padding: 20px;
+    margin-top: 30px;
+    color: #e0e0ff;
+  }
+
+  h3 {
+    margin-top: 0;
+    color: #e0e0ff;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>Civic Nervous System — Dashboard</h2>
+
+<div class="panel" id="personalPanel">
+  <h3>Personal Stability Distribution</h3>
+  <div id="personalStats">Loading...</div>
+</div>
+
+<div class="panel" id="communityPanel">
+  <h3>Community Stress Map</h3>
+  <div id="communityStats">Loading...</div>
+</div>
+
+<div class="panel" id="regionPanel">
+  <h3>Regional Stress Overview</h3>
+  <div id="regionStats">Loading...</div>
+</div>
+
+<div class="panel" id="globalPanel">
+  <h3>Global Stress Indicator</h3>
+  <div id="globalStress">Loading...</div>
+</div>
+
+<div class="panel" id="actionPanel">
+  <h3>Recommended Action</h3>
+  <div id="recommendedAction">Loading...</div>
+</div>
+
+<script>
+const API = "https://YOUR_RENDER_URL_HERE/cns/v1/state/summary";
+
+async function loadCNS() {
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
+
+    document.getElementById("personalStats").textContent =
+      `Stable: ${data.personal.stable}, ` +
+      `Strained: ${data.personal.strained}, ` +
+      `Depleted: ${data.personal.depleted}`;
+
+    document.getElementById("communityStats").innerHTML =
+      data.communities.map(c => `
+        <div>${c.city}: ${c.status} (Priority: ${c.priority})</div>
+      `).join("");
+
+    document.getElementById("regionStats").innerHTML =
+      data.regions.map(r => `
+        <div>${r.region}: Stress ${r.stressScore} (Alert: ${r.alert})</div>
+      `).join("");
+
+    document.getElementById("globalStress").textContent =
+      data.global.overallStress.toFixed(2);
+
+    document.getElementById("recommendedAction").textContent =
+      data.global.recommendedAction;
+
+  } catch (err) {
+    document.getElementById("recommendedAction").textContent =
+      "Unable to reach CNS API.";
+  }
+}
+
+// Initial load
+loadCNS();
+
+// Auto-refresh every 30 seconds
+setInterval(loadCNS, 30000);
+</script>
+
+</body>
+</html>
