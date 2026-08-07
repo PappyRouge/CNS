@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Collective Engine</title>
+<style>
+  body {
+    background: #0a0a0f;
+    color: #e0e0ff;
+    font-family: monospace;
+    padding: 40px;
+    max-width: 800px;
+    margin: auto;
+  }
+  .panel {
+    background: #11111a;
+    border: 1px solid #33334a;
+    padding: 20px;
+    margin-top: 30px;
+  }
+  h2, h3 {
+    color: #e0e0ff;
+  }
+  input {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background: #11111a;
+    border: 1px solid #33334a;
+    color: #e0e0ff;
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #11111a;
+    border: 1px solid #33334a;
+    color: #e0e0ff;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>Collective Engine</h2>
+
+<div class="panel">
+  <h3>Regional Stress Signal</h3>
+
+  <label>Region</label>
+  <input id="region" value="Algoma">
+
+  <label>Stress Score (0–1)</label>
+  <input id="stressScore" type="number" step="0.1" value="0">
+
+  <label>Critical Communities (comma separated)</label>
+  <input id="critical" value="">
+
+  <button onclick="sendRegion()">Send Signal</button>
+  <div id="statusBox"></div>
+</div>
+
+<script>
+const API = "https://YOUR_RENDER_URL_HERE/cns/v1/signal/region";
+
+async function sendRegion() {
+  const payload = {
+    region: document.getElementById("region").value,
+    stressScore: Number(document.getElementById("stressScore").value),
+    criticalCommunities: document.getElementById("critical").value.split(",").map(s => s.trim())
+  };
+
+  const res = await fetch(API, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+  });
+
+  document.getElementById("statusBox").textContent = "Regional signal sent.";
+}
+</script>
+
+</body>
+</html>
